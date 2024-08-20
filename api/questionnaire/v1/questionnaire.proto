@@ -1,0 +1,268 @@
+syntax = "proto3";
+
+package questionnaire.v1;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "questionnaire/api/questionnaire/v1;v1";
+
+service Questionnaire {
+  rpc CreateQuestionnaire (CreateQuestionnaireRequest) returns (CreateQuestionnaireReply) {
+    option (google.api.http) = {
+      post: "/questionnaire"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建问卷"
+      tags: "questionnaire"
+    };
+  }
+  rpc GetQuestionnaire (GetQuestionnaireRequest) returns (GetQuestionnaireReply) {
+    option (google.api.http) = {
+      get: "/questionnaire/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "根据问卷id获取问卷"
+      tags: "questionnaire"
+    };
+  }
+  rpc ListQuestionnaire (ListQuestionnaireRequest) returns (ListQuestionnaireReply) {
+    option (google.api.http) = {
+      get: "/questionnaire"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取所有问卷"
+      tags: "questionnaire"
+    };
+  }
+  rpc UpdateQuestionnaire (UpdateQuestionnaireRequest) returns (UpdateQuestionnaireReply) {
+    option (google.api.http) = {
+      post: "/questionnaire/{id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "更新问卷"
+      tags: "questionnaire"
+    };
+  }
+  rpc DeleteQuestionnaire (DeleteQuestionnaireRequest) returns (DeleteQuestionnaireReply) {
+    option (google.api.http) = {
+      delete: "/questionnaire/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "删除问卷"
+      tags: "questionnaire"
+    };
+  }
+  rpc CreateQuestion (CreateQuestionRequest) returns (CreateQuestionReply) {
+    option (google.api.http) = {
+      post: "/question"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建问题"
+      tags: "question"
+    };
+  }
+  rpc GetQuestions (GetQuestionRequest) returns (GetQuestionReply) {
+    option (google.api.http) = {
+      get: "/{questionnaireId}/questions"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "根据问卷id获取问题"
+      tags: "question"
+    };
+  }
+  rpc ListQuestion (ListQuestionRequest) returns (ListQuestionReply) {
+    option (google.api.http) = {
+      get: "/questions"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取所有问题"
+      tags: "question"
+    };
+  }
+  rpc UpdateQuestion (UpdateQuestionRequest) returns (UpdateQuestionReply) {
+    option (google.api.http) = {
+      post: "/question/{id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "更新问题"
+      tags: "question"
+    };
+  }
+  rpc DeleteQuestion (DeleteQuestionRequest) returns (DeleteQuestionReply) {
+    option (google.api.http) = {
+      delete: "/question/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "删除问题"
+      tags: "question"
+    };
+  }
+  rpc SubmitAnswer (SubmitAnswerSingleRequest) returns (SubmitAnswerSingleReply) {
+    option (google.api.http) = {
+      post: "/answer/{questionnaireId}/{questionId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "单个问题提交答案"
+      tags: "answer"
+    };
+  }
+  rpc SubmitAnswerBulk (SubmitAnswerBulkRequest) returns (SubmitAnswerBulkReply) {
+    option (google.api.http) = {
+      post: "/answer/{questionnaireId}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "批量提交答案"
+      tags: "answer"
+    };
+  }
+}
+
+message QuestionnaireInfo {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string object = 4;
+}
+
+message CreateQuestionnaireRequest {
+  string name = 2;
+  string description = 3;
+  string object = 4;
+}
+
+message CreateQuestionnaireReply {
+  QuestionnaireInfo data = 1;
+}
+
+message GetQuestionnaireRequest {
+  int64 id = 1;
+}
+
+message GetQuestionnaireReply {
+  QuestionnaireInfo data = 1;
+}
+
+message ListQuestionnaireRequest {
+
+}
+
+message ListQuestionnaireReply {
+  repeated QuestionnaireInfo data = 1;
+}
+
+message UpdateQuestionnaireRequest {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string object = 4;
+}
+
+message UpdateQuestionnaireReply {
+  QuestionnaireInfo data = 1;
+}
+
+message DeleteQuestionnaireRequest {
+  int64 id = 1;
+}
+
+message DeleteQuestionnaireReply {
+  QuestionnaireInfo data = 1;
+}
+
+message QuestionInfo {
+  int64 id = 1;
+  string question = 2;
+  QuestionType type = 3;
+  int64 questionnaireId = 4;
+}
+
+enum QuestionType {
+  UNSPECIFIED = 0;
+  TEXT = 1;
+  CHOICE = 2;
+}
+
+message CreateQuestionRequest {
+  string question = 1;
+  QuestionType type = 2;
+  int64 questionnaireId = 3;
+}
+
+message CreateQuestionReply {
+  QuestionInfo data = 1;
+}
+
+message GetQuestionRequest {
+  int64 questionnaireId = 1;
+}
+
+message GetQuestionReply {
+  repeated QuestionInfo data = 1;
+}
+
+message ListQuestionRequest {
+}
+
+message ListQuestionReply {
+  repeated QuestionInfo data = 1;
+}
+
+message UpdateQuestionRequest {
+  string question = 1;
+  QuestionType type = 2;
+  int64 questionnaireId = 3;
+  int64 id = 4;
+}
+
+message UpdateQuestionReply {
+  QuestionInfo data = 1;
+}
+
+message DeleteQuestionRequest {
+  int64 id = 1;
+}
+
+message DeleteQuestionReply {
+  QuestionInfo data = 1;
+}
+
+message AnswerInfo {
+  string answerText = 1;
+  int64 answerChoice = 2;
+  int64 questionnaireId = 3;
+  int64 questionId = 4;
+  int64 id = 5;
+}
+
+message SubmitAnswerSingleRequest {
+  string answerText = 1;
+  int64 answerChoice = 2;
+  int64 questionnaireId = 3;
+  int64 questionId = 4;
+}
+
+message SubmitAnswerSingleReply {
+  AnswerInfo data = 1;
+}
+
+message AnswerBulkInfo {
+  string answerText = 1;
+  int64 answerChoice = 2;
+  int64 questionId = 4;
+}
+
+message SubmitAnswerBulkRequest {
+  repeated AnswerBulkInfo answerBulkInfo = 1;
+  int64 questionnaireId = 2;
+}
+
+message SubmitAnswerBulkReply {
+  repeated AnswerInfo answerInfo = 1;
+}

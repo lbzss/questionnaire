@@ -1,0 +1,416 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Questionnaire API
+    version: 0.0.1
+paths:
+    /answer/{questionnaireId}:
+        post:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_SubmitAnswerBulk
+            parameters:
+                - name: questionnaireId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/questionnaire.v1.SubmitAnswerBulkRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.SubmitAnswerBulkReply'
+    /answer/{questionnaireId}/{questionId}:
+        post:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_SubmitAnswer
+            parameters:
+                - name: questionnaireId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/questionnaire.v1.SubmitAnswerSingleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.SubmitAnswerSingleReply'
+    /question:
+        post:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_CreateQuestion
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/questionnaire.v1.CreateQuestionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.CreateQuestionReply'
+    /question/{id}:
+        post:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_UpdateQuestion
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/questionnaire.v1.UpdateQuestionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.UpdateQuestionReply'
+        delete:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_DeleteQuestion
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.DeleteQuestionReply'
+    /questionnaire:
+        get:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_ListQuestionnaire
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.ListQuestionnaireReply'
+        post:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_CreateQuestionnaire
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/questionnaire.v1.CreateQuestionnaireRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.CreateQuestionnaireReply'
+    /questionnaire/{id}:
+        get:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_GetQuestionnaire
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.GetQuestionnaireReply'
+        post:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_UpdateQuestionnaire
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/questionnaire.v1.UpdateQuestionnaireRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.UpdateQuestionnaireReply'
+        delete:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_DeleteQuestionnaire
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.DeleteQuestionnaireReply'
+    /questions:
+        get:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_ListQuestion
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.ListQuestionReply'
+    /{questionnaireId}/questions:
+        get:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_GetQuestions
+            parameters:
+                - name: questionnaireId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.GetQuestionReply'
+components:
+    schemas:
+        questionnaire.v1.AnswerBulkInfo:
+            type: object
+            properties:
+                answerText:
+                    type: string
+                answerChoice:
+                    type: string
+                questionId:
+                    type: string
+        questionnaire.v1.AnswerInfo:
+            type: object
+            properties:
+                answerText:
+                    type: string
+                answerChoice:
+                    type: string
+                questionnaireId:
+                    type: string
+                questionId:
+                    type: string
+                id:
+                    type: string
+        questionnaire.v1.CreateQuestionReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionInfo'
+        questionnaire.v1.CreateQuestionRequest:
+            type: object
+            properties:
+                question:
+                    type: string
+                type:
+                    type: integer
+                    format: enum
+                questionnaireId:
+                    type: string
+        questionnaire.v1.CreateQuestionnaireReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionnaireInfo'
+        questionnaire.v1.CreateQuestionnaireRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                object:
+                    type: string
+        questionnaire.v1.DeleteQuestionReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionInfo'
+        questionnaire.v1.DeleteQuestionnaireReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionnaireInfo'
+        questionnaire.v1.GetQuestionReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/questionnaire.v1.QuestionInfo'
+        questionnaire.v1.GetQuestionnaireReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionnaireInfo'
+        questionnaire.v1.ListQuestionReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/questionnaire.v1.QuestionInfo'
+        questionnaire.v1.ListQuestionnaireReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/questionnaire.v1.QuestionnaireInfo'
+        questionnaire.v1.QuestionInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                question:
+                    type: string
+                type:
+                    type: integer
+                    format: enum
+                questionnaireId:
+                    type: string
+        questionnaire.v1.QuestionnaireInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                object:
+                    type: string
+        questionnaire.v1.SubmitAnswerBulkReply:
+            type: object
+            properties:
+                answerInfo:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/questionnaire.v1.AnswerInfo'
+        questionnaire.v1.SubmitAnswerBulkRequest:
+            type: object
+            properties:
+                answerBulkInfo:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/questionnaire.v1.AnswerBulkInfo'
+                questionnaireId:
+                    type: string
+        questionnaire.v1.SubmitAnswerSingleReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.AnswerInfo'
+        questionnaire.v1.SubmitAnswerSingleRequest:
+            type: object
+            properties:
+                answerText:
+                    type: string
+                answerChoice:
+                    type: string
+                questionnaireId:
+                    type: string
+                questionId:
+                    type: string
+        questionnaire.v1.UpdateQuestionReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionInfo'
+        questionnaire.v1.UpdateQuestionRequest:
+            type: object
+            properties:
+                question:
+                    type: string
+                type:
+                    type: integer
+                    format: enum
+                questionnaireId:
+                    type: string
+                id:
+                    type: string
+        questionnaire.v1.UpdateQuestionnaireReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionnaireInfo'
+        questionnaire.v1.UpdateQuestionnaireRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                object:
+                    type: string
+tags:
+    - name: Questionnaire

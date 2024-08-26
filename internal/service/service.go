@@ -14,8 +14,9 @@ type QuestionnaireService struct {
 
 	qnc *biz.QuestionnaireUsecase
 	quc *biz.QuestionUsecase
+	au  *biz.AnswerUsecase
 }
 
-func NewQuestionnaireService(qnc *biz.QuestionnaireUsecase, quc *biz.QuestionUsecase) *QuestionnaireService {
-	return &QuestionnaireService{qnc: qnc, quc: quc}
+func NewQuestionnaireService(qnc *biz.QuestionnaireUsecase, quc *biz.QuestionUsecase, au *biz.AnswerUsecase) *QuestionnaireService {
+	return &QuestionnaireService{qnc: qnc, quc: quc, au: au}
 }

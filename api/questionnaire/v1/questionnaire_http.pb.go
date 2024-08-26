@@ -23,6 +23,7 @@ const OperationQuestionnaireCreateQuestion = "/questionnaire.v1.Questionnaire/Cr
 const OperationQuestionnaireCreateQuestionnaire = "/questionnaire.v1.Questionnaire/CreateQuestionnaire"
 const OperationQuestionnaireDeleteQuestion = "/questionnaire.v1.Questionnaire/DeleteQuestion"
 const OperationQuestionnaireDeleteQuestionnaire = "/questionnaire.v1.Questionnaire/DeleteQuestionnaire"
+const OperationQuestionnaireGetAnswerWithQuestionnaireIdAndQuestionId = "/questionnaire.v1.Questionnaire/GetAnswerWithQuestionnaireIdAndQuestionId"
 const OperationQuestionnaireGetQuestionnaire = "/questionnaire.v1.Questionnaire/GetQuestionnaire"
 const OperationQuestionnaireGetQuestions = "/questionnaire.v1.Questionnaire/GetQuestions"
 const OperationQuestionnaireListQuestion = "/questionnaire.v1.Questionnaire/ListQuestion"
@@ -37,6 +38,7 @@ type QuestionnaireHTTPServer interface {
 	CreateQuestionnaire(context.Context, *CreateQuestionnaireRequest) (*CreateQuestionnaireReply, error)
 	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionReply, error)
 	DeleteQuestionnaire(context.Context, *DeleteQuestionnaireRequest) (*DeleteQuestionnaireReply, error)
+	GetAnswerWithQuestionnaireIdAndQuestionId(context.Context, *GetAnswerWithQuestionnaireIdAndQuestionIdRequest) (*GetAnswerWithQuestionnaireIdAndQuestionIdReply, error)
 	GetQuestionnaire(context.Context, *GetQuestionnaireRequest) (*GetQuestionnaireReply, error)
 	GetQuestions(context.Context, *GetQuestionRequest) (*GetQuestionReply, error)
 	ListQuestion(context.Context, *ListQuestionRequest) (*ListQuestionReply, error)
@@ -61,6 +63,7 @@ func RegisterQuestionnaireHTTPServer(s *http.Server, srv QuestionnaireHTTPServer
 	r.DELETE("/question/{id}", _Questionnaire_DeleteQuestion0_HTTP_Handler(srv))
 	r.POST("/answer/{questionnaireId}/{questionId}", _Questionnaire_SubmitAnswer0_HTTP_Handler(srv))
 	r.POST("/answer/{questionnaireId}", _Questionnaire_SubmitAnswerBulk0_HTTP_Handler(srv))
+	r.GET("/{questionnaireId}/{questionId}/answer", _Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId0_HTTP_Handler(srv))
 }
 
 func _Questionnaire_CreateQuestionnaire0_HTTP_Handler(srv QuestionnaireHTTPServer) func(ctx http.Context) error {
@@ -333,11 +336,34 @@ func _Questionnaire_SubmitAnswerBulk0_HTTP_Handler(srv QuestionnaireHTTPServer) 
 	}
 }
 
+func _Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId0_HTTP_Handler(srv QuestionnaireHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAnswerWithQuestionnaireIdAndQuestionIdRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationQuestionnaireGetAnswerWithQuestionnaireIdAndQuestionId)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAnswerWithQuestionnaireIdAndQuestionId(ctx, req.(*GetAnswerWithQuestionnaireIdAndQuestionIdRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetAnswerWithQuestionnaireIdAndQuestionIdReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type QuestionnaireHTTPClient interface {
 	CreateQuestion(ctx context.Context, req *CreateQuestionRequest, opts ...http.CallOption) (rsp *CreateQuestionReply, err error)
 	CreateQuestionnaire(ctx context.Context, req *CreateQuestionnaireRequest, opts ...http.CallOption) (rsp *CreateQuestionnaireReply, err error)
 	DeleteQuestion(ctx context.Context, req *DeleteQuestionRequest, opts ...http.CallOption) (rsp *DeleteQuestionReply, err error)
 	DeleteQuestionnaire(ctx context.Context, req *DeleteQuestionnaireRequest, opts ...http.CallOption) (rsp *DeleteQuestionnaireReply, err error)
+	GetAnswerWithQuestionnaireIdAndQuestionId(ctx context.Context, req *GetAnswerWithQuestionnaireIdAndQuestionIdRequest, opts ...http.CallOption) (rsp *GetAnswerWithQuestionnaireIdAndQuestionIdReply, err error)
 	GetQuestionnaire(ctx context.Context, req *GetQuestionnaireRequest, opts ...http.CallOption) (rsp *GetQuestionnaireReply, err error)
 	GetQuestions(ctx context.Context, req *GetQuestionRequest, opts ...http.CallOption) (rsp *GetQuestionReply, err error)
 	ListQuestion(ctx context.Context, req *ListQuestionRequest, opts ...http.CallOption) (rsp *ListQuestionReply, err error)
@@ -402,6 +428,19 @@ func (c *QuestionnaireHTTPClientImpl) DeleteQuestionnaire(ctx context.Context, i
 	opts = append(opts, http.Operation(OperationQuestionnaireDeleteQuestionnaire))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionnaireHTTPClientImpl) GetAnswerWithQuestionnaireIdAndQuestionId(ctx context.Context, in *GetAnswerWithQuestionnaireIdAndQuestionIdRequest, opts ...http.CallOption) (*GetAnswerWithQuestionnaireIdAndQuestionIdReply, error) {
+	var out GetAnswerWithQuestionnaireIdAndQuestionIdReply
+	pattern := "/{questionnaireId}/{questionId}/answer"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationQuestionnaireGetAnswerWithQuestionnaireIdAndQuestionId))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

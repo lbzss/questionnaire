@@ -2,8 +2,10 @@ package server
 
 import (
 	"fmt"
+	"github.com/gorilla/handlers"
 	"questionnaire/api/questionnaire/v1"
 	"questionnaire/internal/conf"
+	"questionnaire/internal/middleware"
 	"questionnaire/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -15,8 +17,14 @@ import (
 func NewHTTPServer(c *conf.Server, q *service.QuestionnaireService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
+			middleware.Log(),
 			recovery.Recovery(),
 		),
+		http.Filter(
+			handlers.CORS(
+				handlers.AllowedHeaders([]string{"Content-Type", "x-token"}),
+				handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "DELETE"}),
+				handlers.AllowedOrigins([]string{"*"}))),
 	}
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))

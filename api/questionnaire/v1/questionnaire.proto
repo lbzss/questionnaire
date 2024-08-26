@@ -122,6 +122,15 @@ service Questionnaire {
       tags: "answer"
     };
   }
+  rpc GetAnswerWithQuestionnaireIdAndQuestionId (GetAnswerWithQuestionnaireIdAndQuestionIdRequest) returns (GetAnswerWithQuestionnaireIdAndQuestionIdReply) {
+    option (google.api.http) = {
+      get: "/{questionnaireId}/{questionId}/answer"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "查看问卷下某个问题的所有答案"
+      tags: "answer"
+    };
+  }
 }
 
 message QuestionnaireInfo {
@@ -264,5 +273,23 @@ message SubmitAnswerBulkRequest {
 }
 
 message SubmitAnswerBulkReply {
-  repeated AnswerInfo answerInfo = 1;
+  repeated AnswerInfo data = 1;
+}
+
+message GetAnswerWithQuestionnaireIdAndQuestionIdRequest {
+  int64 questionnaireId = 1;
+  int64 questionId = 2;
+}
+
+message GetAnswerWithQuestionnaireIdAndQuestionIdInfo {
+  QuestionInfo questionInfo = 1;
+  repeated AnswerData data = 3;
+}
+
+message AnswerData {
+  string answerText = 1;
+  int64 answerChoice = 2;
+}
+message GetAnswerWithQuestionnaireIdAndQuestionIdReply {
+  GetAnswerWithQuestionnaireIdAndQuestionIdInfo data = 1;
 }

@@ -235,6 +235,29 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/questionnaire.v1.GetQuestionReply'
+    /{questionnaireId}/{questionId}/answer:
+        get:
+            tags:
+                - Questionnaire
+            operationId: Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId
+            parameters:
+                - name: questionnaireId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/questionnaire.v1.GetAnswerWithQuestionnaireIdAndQuestionIdReply'
 components:
     schemas:
         questionnaire.v1.AnswerBulkInfo:
@@ -245,6 +268,13 @@ components:
                 answerChoice:
                     type: string
                 questionId:
+                    type: string
+        questionnaire.v1.AnswerData:
+            type: object
+            properties:
+                answerText:
+                    type: string
+                answerChoice:
                     type: string
         questionnaire.v1.AnswerInfo:
             type: object
@@ -298,6 +328,20 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/questionnaire.v1.QuestionnaireInfo'
+        questionnaire.v1.GetAnswerWithQuestionnaireIdAndQuestionIdInfo:
+            type: object
+            properties:
+                questionInfo:
+                    $ref: '#/components/schemas/questionnaire.v1.QuestionInfo'
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/questionnaire.v1.AnswerData'
+        questionnaire.v1.GetAnswerWithQuestionnaireIdAndQuestionIdReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/questionnaire.v1.GetAnswerWithQuestionnaireIdAndQuestionIdInfo'
         questionnaire.v1.GetQuestionReply:
             type: object
             properties:
@@ -350,7 +394,7 @@ components:
         questionnaire.v1.SubmitAnswerBulkReply:
             type: object
             properties:
-                answerInfo:
+                data:
                     type: array
                     items:
                         $ref: '#/components/schemas/questionnaire.v1.AnswerInfo'

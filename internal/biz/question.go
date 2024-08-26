@@ -19,6 +19,7 @@ type QuestionRepo interface {
 	FindByQuestionnaireID(context.Context, int) ([]*Question, error)
 	ListAll(context.Context) ([]*Question, error)
 	DeleteByID(context.Context, int) (*Question, error)
+	GetByID(context.Context, int64, int64) (*Question, error)
 }
 
 type QuestionUsecase struct {
@@ -37,6 +38,10 @@ func (uc *QuestionUsecase) CreateQuestion(ctx context.Context, q *Question) (*Qu
 func (uc *QuestionUsecase) GetQuestionByQuestionnaireId(ctx context.Context, id int) ([]*Question, error) {
 	uc.log.WithContext(ctx).Infof("GetQuestionnaireById: %v", id)
 	return uc.repo.FindByQuestionnaireID(ctx, id)
+}
+func (uc *QuestionUsecase) GetQuestionByQuestionnaireIdAndQuestionId(ctx context.Context, questionnaireId, questionId int64) (*Question, error) {
+	//uc.log.WithContext(ctx).Infof("GetQuestionnaireById: %v", id)
+	return uc.repo.GetByID(ctx, questionnaireId, questionId)
 }
 func (uc *QuestionUsecase) ListQuestions(ctx context.Context) ([]*Question, error) {
 	uc.log.WithContext(ctx).Infof("ListQuestionnaire: %v")

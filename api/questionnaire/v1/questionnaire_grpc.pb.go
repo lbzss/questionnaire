@@ -19,18 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Questionnaire_CreateQuestionnaire_FullMethodName = "/questionnaire.v1.Questionnaire/CreateQuestionnaire"
-	Questionnaire_GetQuestionnaire_FullMethodName    = "/questionnaire.v1.Questionnaire/GetQuestionnaire"
-	Questionnaire_ListQuestionnaire_FullMethodName   = "/questionnaire.v1.Questionnaire/ListQuestionnaire"
-	Questionnaire_UpdateQuestionnaire_FullMethodName = "/questionnaire.v1.Questionnaire/UpdateQuestionnaire"
-	Questionnaire_DeleteQuestionnaire_FullMethodName = "/questionnaire.v1.Questionnaire/DeleteQuestionnaire"
-	Questionnaire_CreateQuestion_FullMethodName      = "/questionnaire.v1.Questionnaire/CreateQuestion"
-	Questionnaire_GetQuestions_FullMethodName        = "/questionnaire.v1.Questionnaire/GetQuestions"
-	Questionnaire_ListQuestion_FullMethodName        = "/questionnaire.v1.Questionnaire/ListQuestion"
-	Questionnaire_UpdateQuestion_FullMethodName      = "/questionnaire.v1.Questionnaire/UpdateQuestion"
-	Questionnaire_DeleteQuestion_FullMethodName      = "/questionnaire.v1.Questionnaire/DeleteQuestion"
-	Questionnaire_SubmitAnswer_FullMethodName        = "/questionnaire.v1.Questionnaire/SubmitAnswer"
-	Questionnaire_SubmitAnswerBulk_FullMethodName    = "/questionnaire.v1.Questionnaire/SubmitAnswerBulk"
+	Questionnaire_CreateQuestionnaire_FullMethodName                       = "/questionnaire.v1.Questionnaire/CreateQuestionnaire"
+	Questionnaire_GetQuestionnaire_FullMethodName                          = "/questionnaire.v1.Questionnaire/GetQuestionnaire"
+	Questionnaire_ListQuestionnaire_FullMethodName                         = "/questionnaire.v1.Questionnaire/ListQuestionnaire"
+	Questionnaire_UpdateQuestionnaire_FullMethodName                       = "/questionnaire.v1.Questionnaire/UpdateQuestionnaire"
+	Questionnaire_DeleteQuestionnaire_FullMethodName                       = "/questionnaire.v1.Questionnaire/DeleteQuestionnaire"
+	Questionnaire_CreateQuestion_FullMethodName                            = "/questionnaire.v1.Questionnaire/CreateQuestion"
+	Questionnaire_GetQuestions_FullMethodName                              = "/questionnaire.v1.Questionnaire/GetQuestions"
+	Questionnaire_ListQuestion_FullMethodName                              = "/questionnaire.v1.Questionnaire/ListQuestion"
+	Questionnaire_UpdateQuestion_FullMethodName                            = "/questionnaire.v1.Questionnaire/UpdateQuestion"
+	Questionnaire_DeleteQuestion_FullMethodName                            = "/questionnaire.v1.Questionnaire/DeleteQuestion"
+	Questionnaire_SubmitAnswer_FullMethodName                              = "/questionnaire.v1.Questionnaire/SubmitAnswer"
+	Questionnaire_SubmitAnswerBulk_FullMethodName                          = "/questionnaire.v1.Questionnaire/SubmitAnswerBulk"
+	Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId_FullMethodName = "/questionnaire.v1.Questionnaire/GetAnswerWithQuestionnaireIdAndQuestionId"
 )
 
 // QuestionnaireClient is the client API for Questionnaire service.
@@ -49,6 +50,7 @@ type QuestionnaireClient interface {
 	DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...grpc.CallOption) (*DeleteQuestionReply, error)
 	SubmitAnswer(ctx context.Context, in *SubmitAnswerSingleRequest, opts ...grpc.CallOption) (*SubmitAnswerSingleReply, error)
 	SubmitAnswerBulk(ctx context.Context, in *SubmitAnswerBulkRequest, opts ...grpc.CallOption) (*SubmitAnswerBulkReply, error)
+	GetAnswerWithQuestionnaireIdAndQuestionId(ctx context.Context, in *GetAnswerWithQuestionnaireIdAndQuestionIdRequest, opts ...grpc.CallOption) (*GetAnswerWithQuestionnaireIdAndQuestionIdReply, error)
 }
 
 type questionnaireClient struct {
@@ -179,6 +181,16 @@ func (c *questionnaireClient) SubmitAnswerBulk(ctx context.Context, in *SubmitAn
 	return out, nil
 }
 
+func (c *questionnaireClient) GetAnswerWithQuestionnaireIdAndQuestionId(ctx context.Context, in *GetAnswerWithQuestionnaireIdAndQuestionIdRequest, opts ...grpc.CallOption) (*GetAnswerWithQuestionnaireIdAndQuestionIdReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAnswerWithQuestionnaireIdAndQuestionIdReply)
+	err := c.cc.Invoke(ctx, Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QuestionnaireServer is the server API for Questionnaire service.
 // All implementations must embed UnimplementedQuestionnaireServer
 // for forward compatibility.
@@ -195,6 +207,7 @@ type QuestionnaireServer interface {
 	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionReply, error)
 	SubmitAnswer(context.Context, *SubmitAnswerSingleRequest) (*SubmitAnswerSingleReply, error)
 	SubmitAnswerBulk(context.Context, *SubmitAnswerBulkRequest) (*SubmitAnswerBulkReply, error)
+	GetAnswerWithQuestionnaireIdAndQuestionId(context.Context, *GetAnswerWithQuestionnaireIdAndQuestionIdRequest) (*GetAnswerWithQuestionnaireIdAndQuestionIdReply, error)
 	mustEmbedUnimplementedQuestionnaireServer()
 }
 
@@ -240,6 +253,9 @@ func (UnimplementedQuestionnaireServer) SubmitAnswer(context.Context, *SubmitAns
 }
 func (UnimplementedQuestionnaireServer) SubmitAnswerBulk(context.Context, *SubmitAnswerBulkRequest) (*SubmitAnswerBulkReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitAnswerBulk not implemented")
+}
+func (UnimplementedQuestionnaireServer) GetAnswerWithQuestionnaireIdAndQuestionId(context.Context, *GetAnswerWithQuestionnaireIdAndQuestionIdRequest) (*GetAnswerWithQuestionnaireIdAndQuestionIdReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAnswerWithQuestionnaireIdAndQuestionId not implemented")
 }
 func (UnimplementedQuestionnaireServer) mustEmbedUnimplementedQuestionnaireServer() {}
 func (UnimplementedQuestionnaireServer) testEmbeddedByValue()                       {}
@@ -478,6 +494,24 @@ func _Questionnaire_SubmitAnswerBulk_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAnswerWithQuestionnaireIdAndQuestionIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestionnaireServer).GetAnswerWithQuestionnaireIdAndQuestionId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionnaireServer).GetAnswerWithQuestionnaireIdAndQuestionId(ctx, req.(*GetAnswerWithQuestionnaireIdAndQuestionIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Questionnaire_ServiceDesc is the grpc.ServiceDesc for Questionnaire service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -532,6 +566,10 @@ var Questionnaire_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitAnswerBulk",
 			Handler:    _Questionnaire_SubmitAnswerBulk_Handler,
+		},
+		{
+			MethodName: "GetAnswerWithQuestionnaireIdAndQuestionId",
+			Handler:    _Questionnaire_GetAnswerWithQuestionnaireIdAndQuestionId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

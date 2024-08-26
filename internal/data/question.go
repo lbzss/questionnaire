@@ -99,3 +99,16 @@ func (r *questionRepo) DeleteByID(ctx context.Context, id int) (*biz.Question, e
 		QuestionnaireId: int(result.QuestionnaireID),
 	}, nil
 }
+
+func (r *questionRepo) GetByID(ctx context.Context, questionnaireId, questionId int64) (*biz.Question, error) {
+	result, err := r.data.db.Question.Query().Where(question.IDEQ(int(questionId)), question.QuestionnaireIDEQ(questionnaireId)).First(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &biz.Question{
+		Id:              result.ID,
+		Type:            int32(result.Type),
+		Question:        result.Question,
+		QuestionnaireId: int(result.QuestionnaireID),
+	}, nil
+}
